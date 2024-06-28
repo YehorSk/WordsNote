@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.words.fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_newWordFragment"
+            app:destination="@id/newWordFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_showWordFragment"
+            app:destination="@id/showWordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newWordFragment"
+        android:name="com.example.words.fragments.NewWordFragment"
+        android:label="fragment_new_word"
+        tools:layout="@layout/fragment_new_word" >
+        <action
+            android:id="@+id/action_newWordFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateWordFragment"
+        android:name="com.example.words.fragments.UpdateWordFragment"
+        android:label="fragment_update_word"
+        tools:layout="@layout/fragment_update_word" >
+        <action
+            android:id="@+id/action_updateWordFragment_to_showWordFragment"
+            app:destination="@id/showWordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showWordFragment"
+        android:name="com.example.words.fragments.ShowWordFragment"
+        android:label="fragment_show_word"
+        tools:layout="@layout/fragment_show_word" >
+        <action
+            android:id="@+id/action_showWordFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_showWordFragment_to_updateWordFragment"
+            app:destination="@id/updateWordFragment" />
+    </fragment>
+</navigation>
