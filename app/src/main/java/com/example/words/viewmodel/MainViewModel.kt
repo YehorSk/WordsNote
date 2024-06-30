@@ -10,6 +10,8 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(app: Application,private val repository: WordsRepository) : AndroidViewModel(app) {
 
+    var current_word : Word? = null
+
     fun insertWord(word: Word) = viewModelScope.launch {
         repository.insertWord(word)
     }

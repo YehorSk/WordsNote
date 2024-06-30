@@ -1,14 +1,18 @@
 package com.example.words.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.words.MainActivity
@@ -19,49 +23,56 @@ import com.example.words.model.Word
 import com.example.words.viewmodel.MainViewModel
 
 
-class MainFragment : Fragment(R.layout.fragment_main), SearchView.OnQueryTextListener {
+class MainFragment : Fragment(R.layout.fragment_main) {
 
     private var _binding : FragmentMainBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var mainViewModel : MainViewModel
-    private lateinit var adapter : WordsAdapter
-    private lateinit var mView : View
+    private lateinit var noteAdapter : WordsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel = (activity as MainActivity).viewModel
         setUpRecyclerView()
-        mView = view
+        binding.searchInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    searchWord(s.toString())
+                }
+            }
+        })
+        binding.addWordFAB.setOnClickListener{
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToNewWordFragment())
+        }
     }
 
     private fun setUpRecyclerView() {
-        adapter = WordsAdapter()
+        noteAdapter = WordsAdapter()
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(mView.context,LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
-            adapter = adapter
+            adapter = noteAdapter
         }
         activity?.let {
             mainViewModel.getAllWords().observe(viewLifecycleOwner, {
-                note -> adapter.differ.submitList(note)
+                note -> noteAdapter.differ.submitList(note)
             })
         }
+
+        noteAdapter.setItemClickListener(object : WordsAdapter.ItemClickListener{
+            override fun onItemClick(pos: Int, word: Word) {
+                mainViewModel.current_word = word
+            }
+        })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-        inflater.inflate(R.menu.menu_main,menu)
-        val mMenuSearch = menu.findItem(R.id.menuSearch).actionView as SearchView
-        mMenuSearch.isSubmitButtonEnabled = false
-        mMenuSearch.setOnQueryTextListener(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,23 +82,17 @@ class MainFragment : Fragment(R.layout.fragment_main), SearchView.OnQueryTextLis
         return binding.root
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-        if(newText != null){
-            searchWord(newText)
-        }
-        return true
-    }
-
     private fun searchWord(newText: String) {
         val searchQuery = "%$newText%"
         mainViewModel.searchWord(searchQuery).observe(
             this,
-            {list -> adapter.differ.submitList(list)}
+            {list -> noteAdapter.differ.submitList(list)}
             )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }

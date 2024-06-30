@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpViewModel()
-        viewModel.insertWord(Word(0,"Katze","Cat"))
-        viewModel.insertWord(Word(0,"Hund","Dog"))
     }
 
     private fun setUpViewModel() {

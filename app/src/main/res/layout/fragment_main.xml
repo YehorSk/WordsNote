@@ -7,6 +7,47 @@
         android:layout_height="match_parent"
         tools:context=".fragments.MainFragment">
 
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:hint="@string/Search_string"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/baseline_search_24"
+                android:layout_weight="1">
+                
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:id="@+id/modeFAB"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                app:borderWidth="0dp"-->
+<!--                android:elevation="0dp"-->
+<!--                app:elevation="0dp"-->
+<!--                android:src="@drawable/baseline_light_mode_24"-->
+<!--                />-->
+
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
@@ -14,9 +55,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            style="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton"
+            android:id="@+id/addWordFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_add_24"
+            app:borderWidth="0dp"
+            android:backgroundTint="#E5E5E5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:useCompatPadding="true" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
