@@ -23,7 +23,7 @@ interface WordsDAO {
     @Query("SELECT * FROM words_table ORDER BY id")
     fun getAllWords(): LiveData<List<Word>>
 
-    @Query("SELECT * FROM words_table WHERE word LIKE :query OR meaning LIKE :query")
+    @Query("SELECT * FROM words_table WHERE word LIKE :query OR meaning LIKE :query OR partOfSpeech LIKE :query")
     fun searchWord(query: String?): LiveData<List<Word>>
 
 }
